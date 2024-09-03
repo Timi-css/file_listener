@@ -1,6 +1,6 @@
 const express = require('express')
-const apiRoutes = require('./routes/apiRoutes')
-const { startWatcher } = require('./watchers/fileWatcher')
+const apiRoutes = require('./src/routes/apiRoutes')
+const { startWatcher } = require('./src/watchers/fileWatcher')
 
 const app = express()
 const PORT = process.env.PORT || 5454

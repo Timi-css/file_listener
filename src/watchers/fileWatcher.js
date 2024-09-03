@@ -3,13 +3,16 @@ const path = require('path')
 const { validateFile } = require('../utils/fileValidator')
 const { sendEmailWithAttachment } = require('../actions/emailSender')
 const config = require('../config')
+const logger = require('../utils/logger')
 
 require('dotenv').config()
+
+const logFilePath = path.join(config.watchFolder, 'app.log');
 
 // Configure Cokidar 
 let watcher
 
-const startWAtcher = () => {
+const startWatcher = () => {
         if (watcher) return
 
         watcher = chokidar.watch(process.env.WATCH_FOLDER, {
@@ -18,20 +21,21 @@ const startWAtcher = () => {
         })
         // Call function to process new file path
         watcher.on('add', filePath => {
+                if (filePath === logFilePath) return; // Ensures the log file isn't processed as a new file
                 validateFile(filePath, (err, valid) => {
-                        if (err) return console.error(`File Validation failed: ${err.message}`)
+                        if (err) return logger.error(`File Validation failed: ${err.message}`)
                         console.log(`Valid file detected: ${filePath}`)
                         sendEmailWithAttachment(filePath)
                 })
         })
-        console.log(`File watcher started`)
+        logger.info(`File watcher started`)
 }
 
 const stopWatcher = () => {
         if (watcher) {
                 watcher.close()
                 watcher = null
-                console.log('File Watcher stopped')
+                logger.info('File Watcher stopped')
         }
 }
 
@@ -40,5 +44,5 @@ const getStatus = () => {
 }
 
 module.exports = {
-        startWAtcher, stopWatcher, getStatus
+        startWatcher, stopWatcher, getStatus
 }
