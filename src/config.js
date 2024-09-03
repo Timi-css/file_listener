@@ -1,4 +1,3 @@
-
 module.exports = {
         watchFolder: process.env.WATCH_FOLDER,
         allowedFileTypes: (process.env.ALLOWED_FILE_TYPES).split(','),
