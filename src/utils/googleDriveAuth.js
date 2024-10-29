@@ -22,5 +22,4 @@ const authorize = async () => {
                 throw new Error('Token not found. Please run the authorization process')
         }
 }
-
 module.exports = authorize
