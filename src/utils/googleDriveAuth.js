@@ -2,16 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const { google } = require('googleapis');
 
-const credentialsPath = path.join(__dirname, '../../credentials.json');
+require('dotenv').config()
+
 const tokenPath = path.join(__dirname, '../../token.json');
 
 const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 
 const authorize = async () => {
-        const credentials = JSON.parse(fs.readFileSync(credentialsPath));
-        const { client_secret, client_id, redirect_uris } = credentials.installed;
-        const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-
+        const oAuth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URI);
         // Check if token.json already exists
         if (fs.existsSync(tokenPath)) {
                 const token = fs.readFileSync(tokenPath);

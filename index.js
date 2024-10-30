@@ -12,10 +12,8 @@ const PORT = process.env.PORT || 5454
 
 
 // Initialize OAuth2 client
-const credentialsPath = path.join(__dirname, './credentials.json');
-const credentials = JSON.parse(fs.readFileSync(credentialsPath));
-const { client_secret, client_id, redirect_uris } = credentials.installed;
-const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, 'http://localhost:5454/oauth2callback');
+
+const oAuth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URI);
 
 
 app.use(express.json())
